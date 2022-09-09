@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Alert } from './components/layout/Alert'
+import { Footer } from './components/layout/Footer'
+import { Navbar } from './components/layout/Navbar'
+import { AlertProvider } from './context/alert/AlertContext'
+import { GithubProvider } from './context/github/GithubContext'
+import { About } from './pages/About'
+import { Home } from './pages/Home'
+import { NotFound } from './pages/NotFound'
+import { User } from './pages/User'
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <GithubProvider>
+      <AlertProvider>
+        <Router>
+          <div className="flex flex-col justify-between h-screen">
+            <Navbar />
+            <main className="container mx-auto px-3 pb-12">
+              <Alert />
+              <Routes>
+                <Route
+                  path="/"
+                  element={<Home />}
+                />
+                <Route
+                  path="/about"
+                  element={<About />}
+                />
+                <Route
+                  path="/user/:id"
+                  element={<User />}
+                />
+                <Route
+                  path="/notfound"
+                  element={<NotFound />}
+                />
+                <Route
+                  path="/*"
+                  element={<NotFound />}
+                />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </Router>
+      </AlertProvider>
+    </GithubProvider>
+  )
 }
-
-export default App;
